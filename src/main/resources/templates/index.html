@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/bootstrap.min.css}"/>
+
+    <title>Registration</title>
+</head>
+<body style="min-height: 75rem;
+    padding-top: 4.5rem;">
+<nav th:fragment="header-fg" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Registration and
+                Login Module</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">My profile</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+<div class="container">
+    <ul th:each="bulletin: ${bulletins}" class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="container">
+                <span th:text="${bulletin.header}"> Header </span>
+                <div th:if="${bulletin.image != null}">
+                    <img th:src="@{${bulletin.image}}" style="height: 100px;">
+                </div>
+                <div th:text="${bulletin.description}"> Description</div>
+                <span th:text="${bulletin.userName}"> User </span>
+                <span th:text="${bulletin.createdAt}"> Created At </span>
+            </div>
+        </li>
+    </ul>
+    <p th:fragment="footer-fg">
+        Welcome <span sec:authentication="principal.username">User</span>
+    </p>
+</div>
+
+<script type="text/javascript"
+        th:src="@{/js/jquery.min.js/}"></script>
+<script type="text/javascript"
+        th:src="@{/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
