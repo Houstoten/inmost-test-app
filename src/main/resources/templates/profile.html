@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/bootstrap.min.css}"/>
+
+    <title>Profile</title>
+
+</head>
+<body style="min-height: 75rem;
+    padding-top: 6rem;">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="nav-link ">
+            <a class="navbar-brand" href="#" th:href="@{/}">Bulletin
+                Board</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+                <li sec:authorize="isAuthenticated()" style="pointer-events: none; cursor: default;" ><a th:href="@{/profile}">My profile</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="d-flex flex-row justify-content-around">
+        <h2>Edit user</h2>
+        <form th:action="@{/profile/edit}" th:object="${user}" method="post">
+
+            <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
+               th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
+                error</p>
+
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
+                <label for="firstName" class="control-label">First name</label> <input
+                    id="firstName" class="form-control" th:field="*{firstName}"/>
+                <p class="error-message"
+                   th:each="error: ${#fields.errors('firstName')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
+                <label for="lastName" class="control-label">Last name</label> <input
+                    id="lastName" class="form-control" th:field="*{lastName}"/>
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('lastName')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
+                <label for="email" class="control-label">E-mail</label> <input
+                    id="email" class="form-control" th:field="*{email}"/>
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('email')}" th:text="${error}">Validation
+                    error</p>
+            </div>
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
+                <label for="password" class="control-label">Password</label> <input
+                    id="password" class="form-control" type="password"
+                    th:field="*{password}"/>
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('password')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('newPassword')}? 'has-error':''">
+                <label for="newPassword" class="control-label">New
+                    password</label> <input id="newPassword" class="form-control"
+                                            type="password" th:field="*{newPassword}"/>
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('newPassword')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Edit profile</button>
+            </div>
+        </form>
+
+        <h2>Create new bulletin</h2>
+        <form th:action="@{/bulletin/add}" th:object="${bulletin}" method="post" enctype="multipart/form-data">
+
+            <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
+               th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
+                error</p>
+
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('header')}? 'has-error':''">
+                <label for="header" class="control-label">Header</label> <input
+                    id="header" class="form-control" th:field="*{header}"/>
+                <p class="error-message"
+                   th:each="error: ${#fields.errors('header')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('image')}? 'has-error':''">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="image"
+                           aria-describedby="inputGroupFileAddon01" th:field="*{image}">
+                </div>
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('image')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('description')}? 'has-error':''">
+                <label for="description" class="control-label">Description</label> <textarea
+                    id="description" class="form-control" th:field="*{description}"
+                    style="resize: vertical;"></textarea>
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('description')}" th:text="${error}">Validation
+                    error</p>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Create bulletin</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="index.html :: footer-fg"></div>
+<script type="text/javascript"
+        th:src="@{js/jquery.min.js/}"></script>
+<script type="text/javascript"
+        th:src="@{js/bootstrap.min.js}"></script>
+</body>
+</html>
