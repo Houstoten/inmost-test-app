@@ -58,7 +58,7 @@ public class RegisterController {
             return "registration";
         }
 
-        return "redirect:/registration?success";
+        return "redirect:/login";
     }
 
 }

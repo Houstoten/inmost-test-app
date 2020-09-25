@@ -38,6 +38,12 @@ public class UserController {
     @PostMapping("/edit")
     public String editUser(@ModelAttribute("user") @Valid UserEditDto dto,
                            BindingResult result) {
+
+        if (dto.getPassword().isBlank()) {
+            result.rejectValue("password"
+                    , "400"
+                    , "Password is mandatory!");
+        }
         if (!passwordEncoder.matches(dto.getPassword()
                 , userService
                         .loadUserByUsername(
@@ -52,11 +58,16 @@ public class UserController {
                     , "400"
                     , "Passwords don`t match");
         } else {
-            dto.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+
+            if (!dto.getNewPassword().isBlank()) {
+                dto.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+            } else {
+                dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+            }
         }
 
         if (result.hasErrors()) {
-            return "redirect:/profile";
+            return "profile";
         }
 
         dto.setId(userService.getUserDtoByEmail(SecurityContextHolder
