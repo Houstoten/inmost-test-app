@@ -9,21 +9,14 @@
     <link rel="stylesheet" type="text/css"
           th:href="@{/css/bootstrap.min.css}"/>
 
-    <title>Registration</title>
+    <title>Bulletin Board</title>
 </head>
 <body style="min-height: 75rem;
     padding-top: 4.5rem;">
-<nav th:fragment="header-fg" class="navbar navbar-inverse navbar-fixed-top" >
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <div class="nav-link">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span> <span
-                    class="icon-bar"></span> <span class="icon-bar"></span> <span
-                    class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#" th:href="@{/}">Bulletin Board</a>
+        <div class="nav-link ">
+            <a class="navbar-brand" href="#" style="pointer-events: none; cursor: default;" th:href="@{/}" >Bulletin Board</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -37,16 +30,33 @@
 <br>
 <br>
 <div class="container">
+    <h3>Page</h3>
+    <div th:if="${bulletins.totalPages > 0}" class="pagination"
+         th:each="pageNumber : ${#numbers.sequence(0, bulletins.getTotalPages() - 1 )}">
+        <a th:href="@{/(size=${bulletins.size}, page=${pageNumber})}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber==bulletins.number + 1} ? active"></a>
+    </div>
     <ul th:each="bulletin: ${bulletins}" class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="container">
-                <span th:text="${bulletin.header}"> Header </span>
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            style="display: flex; align-items: center; border: none;">
+            <div style="margin: auto;
+            width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 30px;">
+                <h3 th:text="${bulletin.header}" style="margin-top: 0"> Header </h3>
                 <div th:if="${bulletin.image != null}">
-                    <img th:src="@{${bulletin.image}}" style="height: 100px;">
+                    <img th:src="@{${bulletin.image}}" class="bulletin-image" style="height: 100px;
+                     margin: 10px 0 10px 0; cursor: pointer;">
                 </div>
-                <div th:text="${bulletin.description}"> Description</div>
-                <span th:text="${bulletin.userName}"> User </span>
-                <span th:text="${bulletin.createdAt}"> Created At </span>
+                <div style="margin-bottom: 10px; font-size: 1.7rem; overflow-wrap: break-word"
+                     th:text="${bulletin.description}"> Description
+                </div>
+                <div style="display: flex; flex-direction: row; justify-content: space-between; font-size: 1.15rem;">
+                    <div th:text="${bulletin.userName}"> User</div>
+                    <div th:text="${bulletin.createdAt}"> Created At</div>
+                </div>
             </div>
         </li>
     </ul>
@@ -55,8 +65,23 @@
     </p>
 </div>
 
+
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <img src="" class="imagepreview" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript"
         th:src="@{/js/jquery.min.js/}"></script>
+<script type="text/javascript"
+        th:src="@{/js/index.js/}"></script>
 <script type="text/javascript"
         th:src="@{/js/bootstrap.min.js}"></script>
 
